@@ -1,0 +1,55 @@
+*&---------------------------------------------------------------------*
+*& Report ZDLFAJRRP_003
+*&---------------------------------------------------------------------*
+*&
+*&---------------------------------------------------------------------*
+REPORT ZDLFAJRRP_003.
+
+*A 1= ABERTO
+*V 2= VALIDADO
+*S 3= EM SEPARACAO
+*R 4= EM ROTA
+*F 5= FINALIZADO
+
+DATA: ls_status TYPE zdlfajres_001,
+      lt_status TYPE zdlfajrtt_001.
+
+*declarar tabela forma antiga
+ls_status-status = 'A'.
+ls_status-description = 'Em Aberto'.
+APPEND ls_status TO lt_status.
+
+ls_status-status = 'V'.
+ls_status-description = 'VALIDADO'.
+APPEND ls_status TO lt_status.
+
+ls_status-status = 'S'.
+ls_status-description = 'EM SEPARACAO'.
+APPEND ls_status TO lt_status.
+
+ls_status-status = 'R'.
+ls_status-description = 'Em Rota'.
+APPEND ls_status TO lt_status.
+
+ls_status-status = 'F'.
+ls_status-description = 'Finalizado'.
+APPEND ls_status TO lt_status.
+
+LOOP AT lt_status INTO ls_status.
+  WRITE: / ls_status-status, ' - ', ls_status-description.
+ENDLOOP.
+
+ "---------------------------------------------------------------------"
+
+*forma de desclarar tipo de tabela moderno
+DATA(lt_status_inline) = VALUE zdlfajrtt_001(
+( status = 'A' description = 'Em Aberto' )
+( status = 'V' description = 'Validado' )
+( status = 'S' description = 'Em Separacao' )
+( status = 'R' description = 'Em Rota' )
+( status = 'F' description = 'Finalizado' )
+).
+
+LOOP AT lt_status INTO ls_status.
+  WRITE: / ls_status-status, ' - ', ls_status-description.
+ENDLOOP.
